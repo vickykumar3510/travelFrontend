@@ -10,7 +10,7 @@ A full‑stack AI travel planning application where users can create accounts, l
 
 ```
 git clone <https://github.com/vickykumar3510/travelFrontend.git>
-cd travelfrontend
+cd travelFrontend
 npm install
 npm run dev
 ```
@@ -128,6 +128,5 @@ Sample Response:
 ```
 
 ## Contact
---
 
 For bugs or feature requests, please reach out to vicky.kumar3510@gmail.com
