@@ -4,12 +4,12 @@ A full‑stack AI travel planning application where users can create accounts, l
 
 ## Demo Link
 
-[Live Demo]()
+[Live Demo](https://travel-frontend-rose.vercel.app/)
 
 ## Quick Start
 
 ```
-git clone <your-repo-url>
+git clone <https://github.com/vickykumar3510/travelFrontend.git>
 cd travelfrontend
 npm install
 npm run dev
@@ -24,6 +24,7 @@ npm run dev
 - MongoDB
 - JWT
 - bcryptjs
+- openai
 
 ## Demo Video
 
