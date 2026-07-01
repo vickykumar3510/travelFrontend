@@ -739,29 +739,28 @@ p {
 .ai-planner-input {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   margin-bottom: 1.5rem;
 }
 
-.ai-prompt-card {
+.ai-planner-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
   width: 100%;
-  max-width: 640px;
-  padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 2px);
-  box-shadow: var(--shadow);
-  margin: 0 auto;
 }
 
-.ai-prompt-card::before {
-  content: "";
-  display: block;
-  height: 3px;
-  margin: -1.5rem -1.5rem 1.25rem;
-  border-radius: calc(var(--radius) + 2px) calc(var(--radius) + 2px) 0 0;
-  background: var(--gradient-accent);
+.ai-form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 140px;
+}
+
+.ai-form-field-destination {
+  flex: 2;
+  min-width: 220px;
 }
 
 .ai-prompt-label {
@@ -800,9 +799,37 @@ p {
 }
 
 .ai-form-actions {
-  margin-top: 1rem;
   display: flex;
-  justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+  .ai-form-field-destination {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .ai-planner-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ai-form-field,
+  .ai-form-field-destination {
+    flex: none;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ai-form-actions {
+    width: 100%;
+  }
+
+  .ai-form-actions .btn {
+    width: 100%;
+  }
 }
 
 .ai-loading {
@@ -810,9 +837,8 @@ p {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  max-width: 640px;
-  padding: 1rem 1.25rem;
-  margin: 1rem auto 0;
+  padding: 1rem 0;
+  margin: 1rem 0 0;
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--accent);

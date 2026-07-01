@@ -5,9 +5,12 @@ import toast from "react-hot-toast";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FavouritesContext } from "../context/FavouritesContext";
+import { ASIAN_DESTINATIONS } from "../data/asianDestinations";
 
 const AiPlanner = () => {
-  const [prompt, setPrompt] = useState("");
+  const [destinationKey, setDestinationKey] = useState("");
+  const [days, setDays] = useState("");
+  const [budget, setBudget] = useState("");
   const [travelPlan, setTravelPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const { addToFavourites, isFavourite } = useContext(FavouritesContext);
@@ -15,10 +18,26 @@ const AiPlanner = () => {
   const handleGenerate = async (e) => {
     e.preventDefault();
 
-    if (!prompt.trim()) {
-      toast.error("Please enter a prompt.");
+    if (!destinationKey) {
+      toast.error("Please select a destination.");
       return;
     }
+
+    const daysNum = Number(days);
+    const budgetNum = Number(budget);
+
+    if (!days || daysNum < 1) {
+      toast.error("Please enter a valid number of days.");
+      return;
+    }
+
+    if (!budget || budgetNum < 1) {
+      toast.error("Please enter a valid budget.");
+      return;
+    }
+
+    const [country, city] = destinationKey.split("|");
+    const prompt = `Plan a ${daysNum}-day trip to ${city}, ${country} with a budget of ₹${budgetNum}. Include top attractions, itinerary and local tips.`;
 
     setLoading(true);
     setTravelPlan(null);
@@ -52,29 +71,65 @@ const AiPlanner = () => {
         </div>
 
         <div className="ai-planner-input">
-          <div className="ai-prompt-card">
-            <form onSubmit={handleGenerate}>
-              <label className="ai-prompt-label" htmlFor="ai-prompt">
-                Describe your dream trip
+          <form className="ai-planner-form" onSubmit={handleGenerate}>
+            <div className="ai-form-field ai-form-field-destination">
+              <label className="ai-prompt-label" htmlFor="ai-destination">
+                Destination
               </label>
-              <textarea
-                id="ai-prompt"
-                className="form-textarea"
-                rows="6"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder={`Example:
-Plan a 5-day trip to Goa with a budget of ₹25,000.
-Include top attractions, itinerary and local tips.`}
-              />
+              <select
+                id="ai-destination"
+                className="form-input"
+                value={destinationKey}
+                onChange={(e) => setDestinationKey(e.target.value)}
+              >
+                <option value="">Select country and city</option>
+                {ASIAN_DESTINATIONS.map((destination) => {
+                  const key = `${destination.country}|${destination.city}`;
+                  return (
+                    <option key={key} value={key}>
+                      {destination.country} — {destination.city}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
 
-              <div className="ai-form-actions">
-                <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {loading ? "Generating..." : "Generate Travel Plan"}
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="ai-form-field">
+              <label className="ai-prompt-label" htmlFor="ai-days">
+                Trip duration (days)
+              </label>
+              <input
+                id="ai-days"
+                type="number"
+                className="form-input"
+                min="1"
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+                placeholder="e.g. 5"
+              />
+            </div>
+
+            <div className="ai-form-field">
+              <label className="ai-prompt-label" htmlFor="ai-budget">
+                Budget (₹)
+              </label>
+              <input
+                id="ai-budget"
+                type="number"
+                className="form-input"
+                min="1"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                placeholder="e.g. 25000"
+              />
+            </div>
+
+            <div className="ai-form-actions">
+              <button type="submit" className="btn btn-primary" disabled={loading}>
+                {loading ? "Generating..." : "Generate Travel Plan"}
+              </button>
+            </div>
+          </form>
 
           {loading && (
             <p className="ai-loading">Generating your travel plan...</p>
