@@ -1,17 +1,35 @@
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import { Link } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import HeroCarousel from "./components/HeroCarousel";
 
-export default function App(){
-  return(
+export default function App() {
+  return (
     <>
-    <Header />
-    <main className="main-content home-page">
-      <section className="hero">
-        <h1>Welcome to Travel Planner</h1>
-        <p className="hero-description">Discover the future of travel with AI-powered planning. Our intelligent assistant helps you design personalized itineraries, suggest hidden gems, optimize routes, and manage bookings seamlessly. Whether you're exploring a new city or planning a global adventure, Travel Planner AI makes every trip smarter, faster, and unforgettable.</p>
-      </section>
-    </main>
-    <Footer />
+      <Header />
+      <main className="main-content home-page">
+        <HeroCarousel />
+
+        <section className="hero">
+          <h1>Welcome to Travel Planner</h1>
+          <p className="hero-description">
+            Discover the future of travel with AI-powered planning. Our intelligent assistant
+            helps you design personalized itineraries, suggest hidden gems, optimize routes,
+            and manage bookings seamlessly. Whether you&apos;re exploring a new city or planning
+            a global adventure, Travel Planner AI makes every trip smarter, faster, and
+            unforgettable.
+          </p>
+          <div className="hero-actions">
+            <Link to="/destination" className="btn btn-primary">
+              Explore Destinations
+            </Link>
+            <Link to="/aiplanner" className="btn btn-outline">
+              Try AI Planner
+            </Link>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </>
-  )
+  );
 }
