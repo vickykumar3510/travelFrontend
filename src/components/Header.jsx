@@ -43,7 +43,7 @@ const Header = () => {
       <div className="header-inner">
         <Link to="/" className="logo" onClick={closeMenu}>
           <span className="logo-icon">🏝️</span>
-          <span>Travel Planner</span>
+          <span className="logo-text">Travel Planner</span>
         </Link>
 
         <button
