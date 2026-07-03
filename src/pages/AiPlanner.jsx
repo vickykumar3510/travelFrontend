@@ -5,7 +5,18 @@ import toast from "react-hot-toast";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FavouritesContext } from "../context/FavouritesContext";
+import { useAuth } from "../context/AuthContext";
 import { ASIAN_DESTINATIONS } from "../data/asianDestinations";
+
+function parseAiAnswer(answer) {
+  if (typeof answer !== "string") return answer;
+
+  let text = answer.trim();
+  const fenced = text.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
+  if (fenced) text = fenced[1].trim();
+
+  return JSON.parse(text);
+}
 
 const AiPlanner = () => {
   const [destinationKey, setDestinationKey] = useState("");
@@ -14,6 +25,7 @@ const AiPlanner = () => {
   const [travelPlan, setTravelPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const { addToFavourites, isFavourite } = useContext(FavouritesContext);
+  const { token } = useAuth();
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -45,17 +57,31 @@ const AiPlanner = () => {
     try {
       const res = await axios.post(
         "https://travel-backend-wheat-seven.vercel.app/api/ai/travel-plan",
-        { prompt }
+        { prompt },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setTravelPlan({
-        ...JSON.parse(res.data.answer),
+        ...parseAiAnswer(res.data.answer),
         _id: `ai-${Date.now()}`,
       });
       toast.success("Travel plan generated!");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to generate travel plan.");
+      const status = err.response?.status;
+      if (status === 401) {
+        toast.error("Session expired. Please log in again.");
+      } else if (status === 429) {
+        toast.error("AI service is busy. Please try again in a moment.");
+      } else if (err instanceof SyntaxError) {
+        toast.error("Could not read the travel plan. Please try again.");
+      } else {
+        toast.error(err.response?.data?.error || "Failed to generate travel plan.");
+      }
     } finally {
       setLoading(false);
     }
