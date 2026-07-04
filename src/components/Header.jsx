@@ -32,7 +32,7 @@ const Header = () => {
     closeMenu();
     setToken(null);
     toast.success("Logged out successfully");
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   const navLinkClass = ({ isActive }) =>
@@ -41,9 +41,8 @@ const Header = () => {
   return (
     <header className={`site-header${menuOpen ? " menu-open" : ""}`}>
       <div className="header-inner">
-        <Link to="/" className="logo" onClick={closeMenu}>
-          <span className="logo-icon">🏝️</span>
-          <span className="logo-text">Travel Planner</span>
+        <Link to={token ? "/home" : "/"} className="logo" onClick={closeMenu}>
+          <span className="logo-text">🏝️ Travel Planner</span>
         </Link>
 
         <button
@@ -89,13 +88,13 @@ const Header = () => {
             <>
               {username && <span className="nav-user">Hi, {username}</span>}
               <NavLink to="/destination" className={navLinkClass} onClick={closeMenu}>
-                Destinations
+                Itineraries
               </NavLink>
               <NavLink to="/favourites" className={navLinkClass} onClick={closeMenu}>
-                Favourites ({favouriteLength})
+                Saved Trips ({favouriteLength})
               </NavLink>
               <NavLink to="/orders" className={navLinkClass} onClick={closeMenu}>
-                My Orders ({orders.length})
+                Booked Trips ({orders.length})
               </NavLink>
               <NavLink to="/aiplanner" className={navLinkClass} onClick={closeMenu}>
                 AI Planner

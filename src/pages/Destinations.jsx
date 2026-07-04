@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Header from "../components/Header";
@@ -8,11 +8,18 @@ import { FavouritesContext } from "../context/FavouritesContext";
 function Destinations() {
   const [destinations, setDestinations] = useState([]);
   const [selected, setSelected] = useState(null);
+  const detailRef = useRef(null);
   const { addToFavourites, isFavourite } = useContext(FavouritesContext);
 
   useEffect(() => {
     fetchDestinations();
   }, []);
+
+  useEffect(() => {
+    if (selected && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selected]);
 
   const fetchDestinations = async () => {
     try {
@@ -20,7 +27,7 @@ function Destinations() {
       setDestinations(response.data);
     } catch (err) {
       console.error(err);
-      toast.error("Error while loading destinations.");
+      toast.error("Error while loading itineraries.");
     }
   };
 
@@ -29,11 +36,11 @@ function Destinations() {
     <Header />
     <div className="page-container">
       <div className="page-header">
-        <h2>All Destinations</h2>
+        <h2>Itineraries</h2>
       </div>
 
       {destinations.length === 0 ? (
-        <p className="empty-state">No destinations found.</p>
+        <p className="empty-state">No itineraries found.</p>
       ) : (
         <ul className="destination-grid">
           {destinations.map((destination) => (
@@ -58,7 +65,7 @@ function Destinations() {
                   onClick={() => addToFavourites(destination)}
                   disabled={isFavourite(destination._id)}
                 >
-                  {isFavourite(destination._id) ? "♥ Added" : "♥ Favourites"}
+                  {isFavourite(destination._id) ? "Added" : "Save Trip"}
                 </button>
               </div>
             </li>
@@ -67,7 +74,7 @@ function Destinations() {
       )}
 
       {selected && (
-        <div className="detail-panel">
+        <div className="detail-panel" ref={detailRef}>
           <div className="detail-title">
             <span className="detail-title-text">{selected.destination}</span>
           </div>
@@ -132,7 +139,7 @@ function Destinations() {
               onClick={() => addToFavourites(selected)}
               disabled={isFavourite(selected._id)}
             >
-              {isFavourite(selected._id) ? "♥ Added to Favourites" : "♥ Add to Favourites"}
+              {isFavourite(selected._id) ? "Added to Saved Trips" : "Add to Saved Trips"}
             </button>
 
             <button

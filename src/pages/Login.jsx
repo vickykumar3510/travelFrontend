@@ -25,7 +25,7 @@ function Login() {
 
       setToken(res.data.token, res.data.username || username);
       toast.success("Login successful!");
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       toast.error(err.response?.data?.error || "Login failed.");
     } finally {

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import HeroCarousel from "./components/HeroCarousel";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import HeroCarousel from "../components/HeroCarousel";
 
-export default function App() {
+function Home() {
   return (
     <>
       <Header />
@@ -21,7 +21,7 @@ export default function App() {
           </p>
           <div className="hero-actions">
             <Link to="/destination" className="btn btn-primary">
-              Explore Destinations
+              Explore Itineraries
             </Link>
             <Link to="/aiplanner" className="btn btn-outline">
               Try AI Planner
@@ -33,3 +33,5 @@ export default function App() {
     </>
   );
 }
+
+export default Home;

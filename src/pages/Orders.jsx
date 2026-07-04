@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { OrdersContext } from "../context/OrdersContext";
@@ -6,17 +6,24 @@ import { OrdersContext } from "../context/OrdersContext";
 function Orders() {
   const { orders } = useContext(OrdersContext);
   const [selected, setSelected] = useState(null);
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    if (selected && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selected]);
 
   return (
     <>
       <Header />
       <div className="page-container">
         <div className="page-header">
-          <h2>My Orders</h2>
+          <h2>Booked Trips</h2>
         </div>
 
         {orders.length === 0 ? (
-          <p className="empty-state">No orders yet. Book a trip from your favourites.</p>
+          <p className="empty-state">No booked trips yet. Book a trip from your saved trips.</p>
         ) : (
           <ul className="destination-grid">
             {orders.map((order) => (
@@ -25,7 +32,7 @@ function Orders() {
                 <p className="destination-meta">
                   {order.city}, {order.country} · {order.days} days · ₹ {order.budget.estimated}
                 </p>
-                <small className="card-meta-note">Ordered on: {order.orderedAt}</small>
+                <small className="card-meta-note">Planned on: {order.orderedAt}</small>
 
                 <div className="destination-actions">
                   <button
@@ -42,10 +49,10 @@ function Orders() {
         )}
 
         {selected && (
-          <div className="detail-panel">
+          <div className="detail-panel" ref={detailRef}>
             <div className="detail-title">
               <span className="detail-title-text">{selected.destination}</span>
-              <span className="detail-title-sub">Ordered on: {selected.orderedAt}</span>
+              <span className="detail-title-sub">Planned on: {selected.orderedAt}</span>
             </div>
 
             <div className="detail-summary">

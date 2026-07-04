@@ -38,18 +38,18 @@ export function FavouritesProvider({ children }) {
 
   const addToFavourites = (destination) => {
     if (favourites.some((item) => item._id === destination._id)) {
-      toast.error("Already in favourites");
+      toast.error("Already in saved trips");
       return;
     }
     setFavourites((prev) => [...prev, destination]);
-    toast.success(`${destination.destination} added to favourites`);
+    toast.success(`${destination.destination} added to saved trips`);
   };
 
   const removeFromFavourites = (id, silent = false) => {
     const item = favourites.find((f) => f._id === id);
     setFavourites((prev) => prev.filter((f) => f._id !== id));
     if (item && !silent) {
-      toast.success(`${item.destination} removed from favourites`);
+      toast.success(`${item.destination} removed from saved trips`);
     }
   };
 

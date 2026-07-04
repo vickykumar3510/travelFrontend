@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FavouritesContext } from "../context/FavouritesContext";
@@ -8,6 +8,13 @@ function Favourites() {
   const { favourites, removeFromFavourites } = useContext(FavouritesContext);
   const { addOrder } = useContext(OrdersContext);
   const [selected, setSelected] = useState(null);
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    if (selected && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selected]);
 
   const handleBuyNow = (item) => {
     addOrder(item);
@@ -22,11 +29,11 @@ function Favourites() {
       <Header />
       <div className="page-container">
         <div className="page-header">
-          <h2>My Favourites</h2>
+          <h2>Saved Trips</h2>
         </div>
 
         {favourites.length === 0 ? (
-          <p className="empty-state">No favourites yet. Add some from the destinations page.</p>
+          <p className="empty-state">No saved trips yet. Add some from the itineraries page.</p>
         ) : (
           <ul className="destination-grid">
             {favourites.map((item) => (
@@ -58,7 +65,7 @@ function Favourites() {
                     className="btn btn-primary"
                     onClick={() => handleBuyNow(item)}
                   >
-                    Buy Now
+                    Book Trip
                   </button>
                 </div>
               </li>
@@ -67,7 +74,7 @@ function Favourites() {
         )}
 
         {selected && (
-          <div className="detail-panel">
+          <div className="detail-panel" ref={detailRef}>
             <div className="detail-title">
               <span className="detail-title-text">{selected.destination}</span>
             </div>
@@ -143,7 +150,7 @@ function Favourites() {
                 className="btn btn-primary"
                 onClick={() => handleBuyNow(selected)}
               >
-                Buy Now
+                Book Trip
               </button>
 
               <button

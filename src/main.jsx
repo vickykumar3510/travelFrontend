@@ -2,8 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
 import './index.css'
-import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Landing from './pages/Landing.jsx';
+import Home from './pages/Home.jsx';
 import Destinations from './pages/Destinations.jsx';
 import AiPlanner from './pages/AiPlanner.jsx';
 import Favourites from './pages/Favourites.jsx';
@@ -17,6 +18,10 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
   {
+    path: '/',
+    element: <Landing />
+  },
+  {
     path: '/login',
     element: <Login />
   },
@@ -28,8 +33,8 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: "/",
-        element: <App />
+        path: '/home',
+        element: <Home />
       },
       {
         path: '/destination',

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -24,8 +24,15 @@ const AiPlanner = () => {
   const [budget, setBudget] = useState("");
   const [travelPlan, setTravelPlan] = useState(null);
   const [loading, setLoading] = useState(false);
+  const detailRef = useRef(null);
   const { addToFavourites, isFavourite } = useContext(FavouritesContext);
   const { token } = useAuth();
+
+  useEffect(() => {
+    if (travelPlan && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [travelPlan]);
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -67,6 +74,7 @@ const AiPlanner = () => {
 
       setTravelPlan({
         ...parseAiAnswer(res.data.answer),
+        budget: { estimated: budgetNum },
         _id: `ai-${Date.now()}`,
       });
       toast.success("Travel plan generated!");
@@ -163,7 +171,7 @@ const AiPlanner = () => {
         </div>
 
         {travelPlan && (
-          <div className="detail-panel ai-result">
+          <div className="detail-panel ai-result" ref={detailRef}>
             <div className="detail-title">
               <span className="detail-title-text">{travelPlan.destination}</span>
               <span className="detail-title-sub">AI Generated Plan</span>
@@ -242,8 +250,8 @@ const AiPlanner = () => {
                 disabled={isFavourite(travelPlan._id)}
               >
                 {isFavourite(travelPlan._id)
-                  ? "♥ Added to Favourites"
-                  : "♥ Add to Favourites"}
+                  ? "Added to Saved Trips"
+                  : "Add to Saved Trips"}
               </button>
             </div>
           </div>
