@@ -2,9 +2,21 @@
 
 A full‑stack AI travel planning application where users can create accounts, log in securely, browse destinations, generate personalized trip plans with AI, save trips to favourites, and book trips from their wishlist. Built with a React frontend, Express/Node backend, and MongoDB database.
 
+---
+
 ## Demo Link
 
 [Live Demo](https://travel-frontend-rose.vercel.app/)
+
+---
+
+## Login
+
+> **Guest** <br>
+> Username: `vicky` <br>
+> Password: `vicky`
+
+---
 
 ## Quick Start
 
@@ -14,6 +26,7 @@ cd travelFrontend
 npm install
 npm run dev
 ```
+---
 
 ## Technologies
 
@@ -26,9 +39,13 @@ npm run dev
 - bcryptjs
 - openai
 
+---
+
 ## Demo Video
 
-Watch a walkthrough of all the major features of this app: [Google Drive Link](https://drive.google.com/file/d/16Iy4EPF03UrQy38bGSxnXu0wK0WZB8ES/view?usp=sharing)
+Watch a walkthrough (2-3 minutes) of all the major features of this app: [Google Drive Link](https://drive.google.com/file/d/16Iy4EPF03UrQy38bGSxnXu0wK0WZB8ES/view?usp=sharing)
+
+---
 
 ## Features
 
@@ -86,8 +103,9 @@ Watch a walkthrough of all the major features of this app: [Google Drive Link](h
 - Live counts for favourites and orders in navigation
 - Logout clears session and redirects to login
 
+---
+
 ## API Reference
---
 
 **POST /auth/signup**<br>
 Register new user<br>
@@ -126,6 +144,7 @@ Sample Response:
   answer: "{ destination, city, country, days, budget, topAttractions, itinerary, localTips }"
 }
 ```
+---
 
 ## Contact
 
